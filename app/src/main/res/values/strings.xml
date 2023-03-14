@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">login-screen</string>
+    <string name="login_title">Login</string>
+    <string name="please_signIn">Please sign in to continue.</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="button_signIn">Sign in</string>
+    <string name="dont_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="phone">Phone</string>
+    <string name="username">Username</string>
+    <string name="over_eighteen">Over 18?</string>
+    <string name="create_account">Create Account</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_home">HomeActivity</string>
 </resources>
