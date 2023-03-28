@@ -3,12 +3,21 @@ package br.senai.sp.jandira.login_screen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -16,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.login_screen.components.BottomShape
+import br.senai.sp.jandira.login_screen.components.TopShape
 import br.senai.sp.jandira.login_screen.ui.theme.LoginscreenTheme
 
 class SignUpActivity : ComponentActivity() {
@@ -32,6 +43,23 @@ class SignUpActivity : ComponentActivity() {
 @Preview(showSystemUi = true)
 @Composable
 fun  SignUpScreen() {
+
+    var userState = rememberSaveable() {
+        mutableStateOf("")
+    }
+
+    var phoneState = rememberSaveable() {
+        mutableStateOf("")
+    }
+
+    var emailState = rememberSaveable() {
+        mutableStateOf("")
+    }
+
+    var passwordState = rememberSaveable() {
+        mutableStateOf("")
+    }
+
     Surface(
         modifier = Modifier.
         fillMaxSize()
@@ -46,16 +74,7 @@ fun  SignUpScreen() {
                 fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                Surface(
-                    modifier = Modifier
-                        .width(120.dp)
-                        .height(40.dp)
-                    ,
-                    color = Color(207, 6, 240),
-                    shape = RoundedCornerShape(
-                        bottomStart = 16.dp
-                    )
-                ) {}
+                TopShape()
             }
             //Content
             //Column title
@@ -74,6 +93,34 @@ fun  SignUpScreen() {
                     color = Color(160,156,156),
                     fontSize = 14.sp,
                 )
+                Box(contentAlignment = Alignment.BottomEnd,
+                modifier = Modifier.size(100.dp)) {
+                    Card(modifier = Modifier
+                        .size(100.dp)
+                        .align(Alignment.Center),
+                        shape = CircleShape,
+                        border = BorderStroke(width = 1.dp, Brush.horizontalGradient(
+                            listOf(
+                                Color.Magenta,
+                                Color.White
+                            )
+                        ))
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.profile),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .padding(16.dp)
+                        )
+                    }
+                    Icon(
+                        painter = painterResource(id = R.drawable.camera),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(32.dp)
+                            .align(Alignment.BottomEnd),
+                        tint = Color(207, 6, 240))
+                }
             }
             //Column outlined texts
             Column(
@@ -82,12 +129,12 @@ fun  SignUpScreen() {
                     .padding(16.dp, 0.dp)
             ) {
                 OutlinedTextField(
-                    value = " ",
+                    value = userState.value,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(0.dp, 0.dp, 0.dp, 31.dp),
                     shape = RoundedCornerShape(16.dp),
-                    onValueChange ={},
+                    onValueChange ={userState.value = it},
                     label = { Text(text = stringResource(id = R.string.username))},
                     placeholder = { Text(text = "teste@email.com")},
                     leadingIcon = { Icon(painter = painterResource(id = R.drawable.baseline_person_24),
@@ -95,12 +142,12 @@ fun  SignUpScreen() {
                         tint = Color(207, 6, 240))}
                 )
                 OutlinedTextField(
-                    value = " ",
+                    value = phoneState.value,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(0.dp, 0.dp, 0.dp, 31.dp),
                     shape = RoundedCornerShape(16.dp),
-                    onValueChange ={},
+                    onValueChange ={phoneState.value = it},
                     label = { Text(text = stringResource(id = R.string.phone))},
                     placeholder = { Text(text = "teste@email.com")},
                     leadingIcon = { Icon(painter = painterResource(id = R.drawable.baseline_phone_android_24),
@@ -108,12 +155,12 @@ fun  SignUpScreen() {
                         tint = Color(207, 6, 240))}
                 )
                 OutlinedTextField(
-                    value = " ",
+                    value = emailState.value,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(0.dp, 0.dp, 0.dp, 31.dp),
                     shape = RoundedCornerShape(16.dp),
-                    onValueChange ={},
+                    onValueChange ={emailState.value = it},
                     label = { Text(text = stringResource(id = R.string.e_mail))},
                     placeholder = { Text(text = "teste@email.com")},
                     leadingIcon = { Icon(painter = painterResource(id = R.drawable.baseline_email_24),
@@ -121,8 +168,8 @@ fun  SignUpScreen() {
                         tint = Color(207, 6, 240))}
                 )
                 OutlinedTextField(
-                    value = " ",
-                    onValueChange ={},
+                    value = passwordState.value,
+                    onValueChange ={passwordState.value = it},
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -151,7 +198,8 @@ fun  SignUpScreen() {
                 Button(onClick = { /*TODO*/ },
                     colors = ButtonDefaults.buttonColors(Color(207, 6, 240)),
                     shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 31.dp)
+                    modifier = Modifier
+                        .padding(0.dp, 0.dp, 0.dp, 31.dp)
                         .height(48.dp)
                         .fillMaxWidth()
                 ) {
@@ -168,16 +216,7 @@ fun  SignUpScreen() {
                     Text(text = stringResource(id = R.string.button_signIn), color = Color(207, 6, 240))
                 }
             }
-            Surface(
-                modifier = Modifier
-                    .width(120.dp)
-                    .height(40.dp)
-                ,
-                color = Color(207, 6, 240),
-                shape = RoundedCornerShape(
-                    topEnd = 16.dp
-                )
-            ) {}
+            BottomShape()
 
         }
 
