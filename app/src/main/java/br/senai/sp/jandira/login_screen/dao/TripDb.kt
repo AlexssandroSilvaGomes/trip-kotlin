@@ -16,7 +16,7 @@ abstract class TripDb: RoomDatabase() {
 
         fun getDataBase(context: Context): TripDb {
 
-            if(::instanceDb.isInitialized){
+            if(!::instanceDb.isInitialized){
                 instanceDb = Room.databaseBuilder(
                     context,
                     TripDb::class.java,

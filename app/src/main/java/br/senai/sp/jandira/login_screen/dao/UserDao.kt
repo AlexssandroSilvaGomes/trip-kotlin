@@ -1,12 +1,10 @@
 package br.senai.sp.jandira.login_screen.dao
 
 import android.provider.ContactsContract.CommonDataKinds.Email
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import br.senai.sp.jandira.login_screen.model.User
 
+@Dao
 interface UserDao {
 
     @Insert
@@ -19,6 +17,9 @@ interface UserDao {
     fun delete(user: User): Int
 
     @Query("SELECT * FROM tbl_user WHERE email = :email")
-    fun findUserByEmail(email: Email): User
+    fun findUserByEmail(email: String): User
+
+    @Query("SELECT * FROM tbl_user WHERE email = :email AND password = :password")
+    fun authenticate(email: String, password: String): User
 
 }
