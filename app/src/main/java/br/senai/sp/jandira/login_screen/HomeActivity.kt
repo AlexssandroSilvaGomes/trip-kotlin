@@ -6,68 +6,105 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.login_screen.model.Category
+import br.senai.sp.jandira.login_screen.repository.CategoryRepository
 import br.senai.sp.jandira.login_screen.ui.theme.LoginscreenTheme
+import br.senai.sp.jandira.login_screen.ui.theme.Shapes
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             LoginscreenTheme {
-                    Home()
-                }
+                Home(CategoryRepository.getCategories())
             }
         }
     }
+}
 
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun Home() {
-    Surface(modifier =  Modifier
-        .fillMaxSize()
+fun Home(categories: List<Category>) {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                Text(text = "+")
+            }
+        }
     ) {
-        Column(modifier = Modifier
-            .fillMaxSize()
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
         ) {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(360.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
-                Image(painter = painterResource(id = R.drawable.paris),
-                    contentDescription = "",
-                    alignment = Alignment.BottomCenter
-                )
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 13.dp, end = 19.dp),
-                horizontalAlignment = Alignment.End) {
-                    Card(modifier = Modifier.size(61.dp),
-                    shape = CircleShape,
-                    border = BorderStroke(2.dp, color = Color.White)
-                    ) {
-                        Image(painter = painterResource(id = R.drawable.susanna_profile), contentDescription = "")
-                    }
-                    Spacer(modifier = Modifier.height(3.dp))
-                    Text(text = stringResource(id = R.string.user_name),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                        color = Color(255, 255, 255)
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    backgroundColor = Color.Magenta,
+                    shape = RectangleShape
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.paris),
+                        contentDescription = "Logo",
+                        contentScale = ContentScale.Crop
                     )
+                }
+                Text(
+                    text = stringResource(id = R.string.categories),
+                    modifier = Modifier.padding(top = 14.dp, start = 16.dp)
+                )
+                LazyRow() {
+                    items(categories) {
+                        Card(
+                            modifier = Modifier
+                                .size(
+                                    110.dp,
+                                    80.dp
+                                )
+                                .padding(4.dp),
+                            backgroundColor = Color(207, 6, 240)
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    painter = it.icon!!,
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .height(32.dp)
+                                        .width(32.dp),
+                                    tint = Color.White
+                                )
+                                Text(
+                                    text = it.name,
+                                    color = Color.White
+                                )
+                            }
+                        }
+                    }
+
                 }
             }
 
@@ -75,3 +112,12 @@ fun Home() {
 
     }
 }
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun DefaultPreview() {
+    LoginscreenTheme {
+        Home(CategoryRepository.getCategories())
+    }
+}
+
